@@ -13,7 +13,7 @@ You can install the development version of **TLR** from GitHub with:
 ```r
 # install.packages("devtools")   # if you don’t have devtools
 library(devtools)
-install_github("Yuzhou-Lin/TLR")
+install_github("loyal-servant-of-lin-lab/TLR")
 ```
 
 ## Implementation
