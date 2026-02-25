@@ -367,8 +367,9 @@ GitHub with</p>
 <pre class="r"><code># install.packages(&quot;devtools&quot;)   # if you don’t have devtools
 library(devtools)</code></pre>
 <pre><code>## Loading required package: usethis</code></pre>
+<pre><code>## Warning: package &#39;usethis&#39; was built under R version 4.3.3</code></pre>
 <pre class="r"><code>install_github(&quot;loyal-servant-of-lin-lab/TLR&quot;)</code></pre>
-<pre><code>## Skipping install of &#39;TLR&#39; from a github remote, the SHA1 (bf740d9f) has not changed since last install.
+<pre><code>## Skipping install of &#39;TLR&#39; from a github remote, the SHA1 (5023b658) has not changed since last install.
 ##   Use `force = TRUE` to force installation</code></pre>
 <p>Then you can load the TLR library with</p>
 <pre class="r"><code>library(TLR)</code></pre>
@@ -478,15 +479,20 @@ coefs2 &lt;- tail_est[3:4]</code></pre>
 <p>We implement TLR given the p-values, the estimated proportions, and
 the estimated TLR parameters. We then check the FDP and power for this
 single simulation.</p>
-<pre class="r"><code>index_TLR &lt;- TLR(p.M,p.Y,estws,coefs,coefs2,significance_upper = sig_level,control.method=&quot;FDR&quot;,ifcond = 1)
+<pre class="r"><code>estws_prop &lt;- list()
+estws_prop$alpha10 &lt;- round((1-estws$alpha1)*estws$alpha2,3)
+estws_prop$alpha01 &lt;- round(estws$alpha1*(1-estws$alpha2),3)
+estws_prop$alpha00 &lt;- round(estws$alpha1*estws$alpha2,3)
+
+index_TLR &lt;- TLR(p.M,p.Y,estws_prop,coefs,coefs2,significance_upper = sig_level,control.method=&quot;FDR&quot;,ifcond = 1)
 
 true_set &lt;- which(case==&quot;11&quot;)
 result_tab &lt;- index_fpn_fdr_power_func(index_TLR,true_set)
 result_tab &lt;- matrix(result_tab,1,2)
 print(paste(&quot;FDP is&quot;, result_tab[1, 1]))</code></pre>
-<pre><code>## [1] &quot;FDP is 0.0477673935617861&quot;</code></pre>
+<pre><code>## [1] &quot;FDP is 0.0509013785790032&quot;</code></pre>
 <pre class="r"><code>print(paste(&quot;Power is&quot;, result_tab[1, 2]))</code></pre>
-<pre><code>## [1] &quot;Power is 0.382083333333333&quot;</code></pre>
+<pre><code>## [1] &quot;Power is 0.372916666666667&quot;</code></pre>
 </div>
 <div id="calculate-the-average-fdr-and-power-for-tlr-using-many-replications." class="section level2">
 <h2>Calculate the average FDR and power for TLR using many

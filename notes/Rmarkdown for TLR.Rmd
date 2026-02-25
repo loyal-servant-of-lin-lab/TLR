@@ -148,7 +148,13 @@ coefs2 <- tail_est[3:4]
 We implement TLR given the p-values, the estimated proportions, and the estimated TLR parameters. We then check the FDP and power for this single simulation.
 
 ```{r}
-index_TLR <- TLR(p.M,p.Y,estws,coefs,coefs2,significance_upper = sig_level,control.method="FDR",ifcond = 1)
+
+estws_prop <- list()
+estws_prop$alpha10 <- round((1-estws$alpha1)*estws$alpha2,3)
+estws_prop$alpha01 <- round(estws$alpha1*(1-estws$alpha2),3)
+estws_prop$alpha00 <- round(estws$alpha1*estws$alpha2,3)
+
+index_TLR <- TLR(p.M,p.Y,estws_prop,coefs,coefs2,significance_upper = sig_level,control.method="FDR",ifcond = 1)
 
 true_set <- which(case=="11")
 result_tab <- index_fpn_fdr_power_func(index_TLR,true_set)
